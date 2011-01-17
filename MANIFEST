@@ -1,0 +1,9 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/WebService-Yahoo-BOSS.t
+lib/WebService/Yahoo/BOSS.pm
+lib/WebService/Yahoo/BOSS/Result.pm
+lib/WebService/Yahoo/BOSS/ResultSet.pm
+META.yml                                 Module meta-data (added by MakeMaker)
