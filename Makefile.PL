@@ -11,6 +11,7 @@ WriteMakefile(
     PREREQ_PM    => {
         'Any::Moose'       => 0,
         'Any::URI::Escape' => 0,
+        'LWP::UserAgent'   => 0,
         'XML::LibXML'      => 1.70
     },
     ABSTRACT_FROM => 'lib/WebService/Yahoo/BOSS.pm',

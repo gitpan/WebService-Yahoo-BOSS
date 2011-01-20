@@ -15,7 +15,7 @@ use LWP::UserAgent;
 use URI;
 use WebService::Yahoo::BOSS::ResultSet;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 our $Ua = LWP::UserAgent->new( agent => __PACKAGE__ . '_' . $VERSION );
 
