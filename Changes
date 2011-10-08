@@ -1,5 +1,8 @@
 Revision history for Perl extension WebService-Yahoo-BOSS.
 
+0.06  Fri Oct 07 2011
+    - add Net::OAuth dependency
+
 0.05  Fri Oct 07 2011
     - Yahoo BOSS V2 compatibility. The V1 web service was deprecated
       a couple days ago so I updated this module to V2.  Incompatible

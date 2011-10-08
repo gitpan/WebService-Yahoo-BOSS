@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               WebService-Yahoo-BOSS
-version:            0.05
+version:            0.06
 abstract:           Interface to the Yahoo BOSS API
 author:
     - Fred Moyer <fred@slwifi.com>
@@ -14,8 +14,9 @@ requires:
     Any::Moose:        0
     Any::URI::Escape:  0
     Data::UUID:        1.217
+    JSON::XS:          2.32
     LWP::UserAgent:    0
-    XML::LibXML:       0.27
+    Net::OAuth:        0.27
 no_index:
     directory:
         - t

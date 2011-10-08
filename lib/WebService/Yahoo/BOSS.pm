@@ -18,21 +18,14 @@ use Data::Dumper;
 use Data::UUID;
 use WebService::Yahoo::BOSS::Response;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 our $Ua = LWP::UserAgent->new( agent => __PACKAGE__ . '_' . $VERSION );
 
 our $Api_host = 'yboss.yahooapis.com';
 our $Api_base = "http://$Api_host";
 
-our $ckey =
-'dj0yJmk9WEcxcWJGRlZ6U2pUJmQ9WVdrOU4wMXpVV2s1TlRBbWNHbzlOakl4T1RFMU9EWXkmcz1jb25zdW1lcnNlY3JldCZ4PTQw';
-our $csecret = '00be60cf622f615bbcc2d64bed4cff3ad6e16228';
-
 my $Ug = Data::UUID->new;
-
-#Application URL: http://www.slwifi.com/
-#App Domain: search.slwifi.com
 
 $Net::OAuth::PROTOCOL_VERSION = Net::OAuth::PROTOCOL_VERSION_1_0A;
 
@@ -65,8 +58,8 @@ sub Web {
 
     # Create request
     my $request = Net::OAuth->request("request token")->new(
-        consumer_key     => $ckey,
-        consumer_secret  => $csecret,
+        consumer_key     => $args{ckey},
+        consumer_secret  => $args{csecret},
         request_url      => $url,
         request_method   => 'GET',
         signature_method => 'HMAC-SHA1',
@@ -105,10 +98,7 @@ sub Web {
                     start   => 0,
                     exclude => 'pilsner', );
 
- # todo - add pluggable xml/json parser
- foreach my $hit ( @{$res ) {
-     print $hit->url, $hit->title; # etc..
- }
+ # see source for result attributes
 
 =head1 DESCRIPTION
 
