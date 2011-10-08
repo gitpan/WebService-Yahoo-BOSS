@@ -1,5 +1,10 @@
 Revision history for Perl extension WebService-Yahoo-BOSS.
 
+0.05  Fri Oct 07 2011
+    - Yahoo BOSS V2 compatibility. The V1 web service was deprecated
+      a couple days ago so I updated this module to V2.  Incompatible
+      changes from 0.4, please read the BOSS API docs.
+
 0.04  Wed Jan 19 18:37 2011
     - added LWP::UserAgent prereq
 

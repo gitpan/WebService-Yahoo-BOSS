@@ -13,17 +13,32 @@ use Any::Moose;
 use Any::URI::Escape;
 use LWP::UserAgent;
 use URI;
-use WebService::Yahoo::BOSS::ResultSet;
+use Net::OAuth;
+use Data::Dumper;
+use Data::UUID;
+use WebService::Yahoo::BOSS::Response;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our $Ua = LWP::UserAgent->new( agent => __PACKAGE__ . '_' . $VERSION );
 
-our $Api_host = 'boss.yahooapis.com';
-our $Api_base = "http://$Api_host/";
+our $Api_host = 'yboss.yahooapis.com';
+our $Api_base = "http://$Api_host";
 
-has 'appid' => ( is => 'ro', isa => 'Str', required => 1 );
-has 'url' => (
+our $ckey =
+'dj0yJmk9WEcxcWJGRlZ6U2pUJmQ9WVdrOU4wMXpVV2s1TlRBbWNHbzlOakl4T1RFMU9EWXkmcz1jb25zdW1lcnNlY3JldCZ4PTQw';
+our $csecret = '00be60cf622f615bbcc2d64bed4cff3ad6e16228';
+
+my $Ug = Data::UUID->new;
+
+#Application URL: http://www.slwifi.com/
+#App Domain: search.slwifi.com
+
+$Net::OAuth::PROTOCOL_VERSION = Net::OAuth::PROTOCOL_VERSION_1_0A;
+
+has 'ckey'    => ( is => 'ro', isa => 'Str', required => 1 );
+has 'csecret' => ( is => 'ro', isa => 'Str', required => 1 );
+has 'url'     => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
@@ -33,36 +48,49 @@ has 'url' => (
 sub Web {
     my ( $self, %args ) = @_;
 
-    unless ($args{query} && ($args{query} ne '')) {
+    unless ( $args{q} && ( $args{q} ne '' ) ) {
         die "query param needed to search";
     }
 
-    my $format = $args{format} || 'xml';
-    die 'only xml format supported, patches welcome' unless $format eq 'xml';
+    $args{format} ||= 'json';
+    $args{count} = 10;
+    die 'only json format supported, xml patches welcome'
+      unless $args{format} eq 'json';
+
+    $args{filter} = '-porn';
 
     # build the endpoint
-    my $urlstring = $self->url
-          . 'ysearch/web/v1/'
-          . uri_escape( $args{query} )
-          . '?appid='
-          . $self->appid
-          . "&format=$format&filter=-porn&view=keyterms";
+    my $url  = $self->url . '/ysearch/web';
+    my $uuid = $Ug->to_string( $Ug->create() );
 
-    if ($args{start}) {
-        $urlstring .= "&start=" . $args{start};
-    }
+    # Create request
+    my $request = Net::OAuth->request("request token")->new(
+        consumer_key     => $ckey,
+        consumer_secret  => $csecret,
+        request_url      => $url,
+        request_method   => 'GET',
+        signature_method => 'HMAC-SHA1',
+        timestamp        => time,
+        nonce            => $uuid,
+        extra_params     => \%args,
+        callback         => 'http://printer.example.com/request_token_ready',
+    );
 
-    my $url = URI->new($urlstring);
+    # Sign request
+    $request->sign;
 
-    my $res = $Ua->get($url);
+    # Get message to the Service Provider
+    my $res = $Ua->get( $request->to_url );
+
     unless ( $res->is_success ) {
-        die $res->status_line;
+
+        die "bad response: " . Dumper($res);
     }
 
-    my $result_set = WebService::Yahoo::BOSS::ResultSet->parse(
-        $res->decoded_content);
+    my $response =
+      WebService::Yahoo::BOSS::Response->parse( $res->decoded_content );
 
-    return $result_set;
+    return $response;
 }
 
 1;
@@ -71,10 +99,9 @@ sub Web {
 
  use WebService::Yahoo::BOSS;
 
- # props out to the original boss Bruce Springsteen
- $Boss = WebService::Yahoo::BOSS->new( appid => $appid );
+ $Boss = WebService::Yahoo::BOSS->new( ckey => $ckey, csecret => $csecret );
 
- $res = $Boss->Web( query   => 'microbrew award winner 2010',
+ $res = $Boss->Web( q       => 'microbrew award winner 2010',
                     start   => 0,
                     exclude => 'pilsner', );
 
@@ -93,13 +120,9 @@ innovative use.
 For more information check out the following links.  This is a work in
 progress, so patches welcome!
 
-The low level request structure is as follows:
-
- http://boss.yahooapis.com/ysearch/{vertical}/v1/{query}?appid=xyz[&param1=val1&param2=val2&etc]
-
 =head1 SEE ALSO
 
- http://developer.yahoo.com/search/boss/boss_guide/overview.html
+ http://developer.yahoo.com/search/boss/boss_api_guide
 
  L<Google::Search>
 
@@ -109,7 +132,7 @@ The low level request structure is as follows:
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2010 by Silver Lining Networks
+Copyright (C) 2011 by Silver Lining Networks
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.1 or,

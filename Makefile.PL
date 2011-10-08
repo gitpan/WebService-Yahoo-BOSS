@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -12,7 +12,8 @@ WriteMakefile(
         'Any::Moose'       => 0,
         'Any::URI::Escape' => 0,
         'LWP::UserAgent'   => 0,
-        'XML::LibXML'      => 1.70
+        'XML::LibXML'      => 0.27,
+        'Data::UUID'       => 1.217,
     },
     ABSTRACT_FROM => 'lib/WebService/Yahoo/BOSS.pm',
     AUTHOR        => 'Fred Moyer <fred@slwifi.com>'
