@@ -1,0 +1,46 @@
+{
+   "abstract" : "Interface to the Yahoo BOSS API",
+   "author" : [
+      "Fred Moyer <fred@slwifi.com>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.120630",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "WebService-Yahoo-BOSS",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Any::Moose" : "0",
+            "Any::URI::Escape" : "0",
+            "Data::UUID" : "1.217",
+            "JSON::XS" : "2.32",
+            "LWP::UserAgent" : "0",
+            "Net::OAuth" : "0.27"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.08"
+}
