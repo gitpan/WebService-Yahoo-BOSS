@@ -1,10 +1,10 @@
 {
-   "abstract" : "Interface to the Yahoo BOSS API",
+   "abstract" : "Interface to the Yahoo BOSS Search API",
    "author" : [
       "Fred Moyer <fred@slwifi.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.120630",
+   "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "unknown"
    ],
@@ -32,15 +32,15 @@
       },
       "runtime" : {
          "requires" : {
-            "Any::Moose" : "0",
             "Any::URI::Escape" : "0",
             "Data::UUID" : "1.217",
             "JSON::XS" : "2.32",
             "LWP::UserAgent" : "0",
+            "Moo" : "1.001000",
             "Net::OAuth" : "0.27"
          }
       }
    },
    "release_status" : "stable",
-   "version" : "0.08"
+   "version" : "1.00"
 }
