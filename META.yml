@@ -24,4 +24,5 @@ requires:
   LWP::UserAgent: 0
   Moo: 1.001000
   Net::OAuth: 0.27
-version: 1.01
+  Test::Most: 0
+version: 1.02
